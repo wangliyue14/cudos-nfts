@@ -4,16 +4,23 @@ import NFTList from "./NFTList";
 import Profile from "./Profile";
 
 export default function ({}) {
-  const [items, setItems] = useState([{ name: "test123" }]);
+  const [items, setItems] = useState([{ id: "test123", name: "test123" }]);
 
   const mintNew = () => {
     const newItem = { name: "test new" };
-    setItems((items) => [...items, newItem]);
+    setItems((items) => [
+      ...items,
+      {
+        id: `${items.length + 1}`,
+        description: `extra ${items.length + 1}`,
+        ...newItem,
+      },
+    ]);
   };
 
   return (
     <div className="bg-gray p-4">
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between items-center">
         <h1 className="text-3xl font-bold">CUDOS NFTs</h1>
         <Profile />
       </div>

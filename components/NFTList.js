@@ -6,8 +6,9 @@ export default function ({ items }) {
     <div className="bg-gray pt-4 pb-4">
       <p className="text-lg text-blue-dark mt-4 mb-4">NFT List</p>
       {items.map((item) => (
-        <div>
-          <p>{item.name}</p>
+        <div key={item.id} className="flex flex-row">
+          <p className="w-24">{item.name}</p>
+          <p className="w-24">{item.description}</p>
         </div>
       ))}
     </div>
