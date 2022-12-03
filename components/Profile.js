@@ -1,18 +1,32 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
+import { shortenAddress } from "../helper/wallet";
+import useWallet from "../hooks/useWallet";
 
 export default function ({}) {
   const router = useRouter();
-  const { username } = { username: "David" };
+  const { account } = useWallet();
+  const [hover, setHover] = useState(false);
+
   const onClick = () => {
     router.push("/signup");
   };
+
+  const onHover = () => {
+    setHover((h) => setHover(!h));
+  };
+
   return (
     <button
-      className={"btn bg-blue-dark-2 rounded-full hover:bg-blue-light p-2 w-48"}
+      className={`btn bg-blue-dark-2 rounded-full hover:bg-blue-light p-2 ${
+        hover ? "w-64" : "w-48"
+      }`}
       onClick={onClick}
+      onMouseOver={onHover}
+      onMouseOut={onHover}
     >
-      Hi, <b>{username}</b>
+      {hover ? "Disconnect " : ""}
+      <b>{shortenAddress(account.address)}</b>
     </button>
   );
 }
