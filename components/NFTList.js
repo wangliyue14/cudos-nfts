@@ -10,7 +10,7 @@ export default function NFTList({ items, loading, error }) {
   };
 
   return (
-    <div className="bg-gray mt-4 mb-4 bg-blue-dark-2 rounded-lg p-4 lg:w-3/4">
+    <div className="bg-gray mt-4 mb-4 bg-blue-dark-2 rounded-lg p-4 lg:w-[calc(75%-20px)]">
       <p className="text-lg text-blue-dark mt-4 mb-4">NFT List</p>
       <div
         key={0}

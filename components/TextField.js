@@ -3,6 +3,7 @@ import React from "react";
 export default function TextField({
   name,
   label,
+  required,
   type = "text",
   placeholder = "",
   value,
@@ -10,7 +11,11 @@ export default function TextField({
 }) {
   return (
     <label className="block">
-      <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
+      <span
+        className={`block text-sm font-medium text-slate-700 pl-1${
+          required ? " after:content-['*'] after:ml-0.5 after:text-red-500" : ""
+        }`}
+      >
         {label}
       </span>
       <input
