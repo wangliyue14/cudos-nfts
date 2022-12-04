@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import chainInfo from "../config/chainInfo";
 import useFields from "../hooks/useFields";
+import { createDenom } from "../services/nftService";
 import Button from "./Button";
-import CloseButton from "./CloseButton";
+import SubmitButton from "./SubmitButton";
 import ModalDialog from "./ModalDialog";
 import TextField from "./TextField";
 
@@ -9,6 +11,7 @@ const fields = [
   {
     name: "id",
     label: "ID",
+    required: true,
   },
   {
     name: "name",
@@ -46,9 +49,33 @@ const fields = [
 
 export default function IssueDenom({ open, setOpen }) {
   const { data, invalids, onChange, validate, reset } = useFields({ fields });
+  const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    setError(null);
+    setSubmitting(false);
+  }, [open]);
 
   const submit = () => {
+    setError(null);
     if (validate()) {
+      const keplr = window.keplr;
+      if (keplr) {
+        const offlineSigner = keplr.getOfflineSigner(chainInfo.chainId);
+        setSubmitting(true);
+        createDenom(offlineSigner, data)
+          .then(() => {
+            console.log("Minted successfully");
+            setSubmitting(false);
+          })
+          .catch((err) => {
+            setError(err.toString());
+            setSubmitting(false);
+          });
+      } else {
+        console.log("Connect Keplr Wallet");
+      }
     }
   };
 
@@ -71,13 +98,27 @@ export default function IssueDenom({ open, setOpen }) {
         </div>
       ))}
 
+      {error && (
+        <div className="text-red-300 text-sm italic mb-4 font-bold">
+          {error}
+        </div>
+      )}
+
       <div key="buttons" className="flex flex-row justify-around">
-        <Button className="w-36" onClick={reset}>
+        <Button
+          className="w-36"
+          onClick={() => {
+            reset();
+            setError(null);
+          }}
+        >
           Reset fields
         </Button>
-        <Button className="w-36" onClick={submit}>
-          Issue denom
-        </Button>
+        <SubmitButton
+          submit={submit}
+          submitting={submitting}
+          label="Issue denom"
+        />
       </div>
     </ModalDialog>
   );

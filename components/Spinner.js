@@ -1,10 +1,12 @@
 import React from "react";
 
-export default function Spinner({}) {
+export default function Spinner({ label, color }) {
   return (
-    <div className="flex flex-row text-blue-dark mt-4 justify-center">
-      <img className="ml-4 mr-4" src="/processing.svg" width={25} height={25} />{" "}
-      Loading...
+    <div
+      className={`flex flex-row justify-center ${color || "text-blue-dark"}`}
+    >
+      <img className="mr-2" src="/loading.svg" width={25} height={25} />{" "}
+      {label || "Loading..."}
     </div>
   );
 }

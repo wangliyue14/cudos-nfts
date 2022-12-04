@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function useFields({ fields }) {
   const [data, setData] = useState({});
   const [invalids, setInvalids] = useState({});
+  const [touched, setTouched] = useState(false);
 
   const onChange = (event) => {
     setData((data) => ({ ...data, [event.target.name]: event.target.value }));
-    setTimeout(() => validate(), 100);
+    if (touched) {
+      setTimeout(() => validate(), 100);
+    }
   };
 
   const reset = () => {
     let d = {};
     fields.forEach((f) => (d[f.name] = ""));
     setData(d);
+    setTouched(false);
+    setInvalids({});
   };
 
   const validate = () => {
@@ -26,6 +31,7 @@ export default function useFields({ fields }) {
         setInvalids((inv) => ({ ...inv, [f.name]: undefined }));
       }
     }
+    setTouched(true);
     return result;
   };
 

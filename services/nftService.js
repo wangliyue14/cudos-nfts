@@ -46,7 +46,8 @@ export const createDenom = async (signer, data) => {
     chainInfo.rpc,
     signer
   );
-  const sender = signer.address;
+  const account = (await signer.getAccounts())[0];
+  const sender = account.address;
   const response = await signingClient.nftIssueDenom(
     sender,
     data.id,
@@ -67,7 +68,8 @@ export const createNft = async (signer, data) => {
     chainInfo.rpc,
     signer
   );
-  const sender = signer.address;
+  const account = (await signer.getAccounts())[0];
+  const sender = account.address;
   const response = await signingClient.nftMintToken(
     sender,
     data.denomId,

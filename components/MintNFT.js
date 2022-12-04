@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useDenoms from "../hooks/useDenoms";
 import useFields from "../hooks/useFields";
 import Button from "./Button";
-import CloseButton from "./CloseButton";
 import ModalDialog from "./ModalDialog";
 import TextField from "./TextField";
+import SubmitButton from "./SubmitButton";
+import { createNft } from "../services/nftService";
+import chainInfo from "../config/chainInfo";
 
 const fields = [
   {
@@ -35,9 +37,33 @@ const fields = [
 export default function MintNFT({ open, setOpen }) {
   const { denoms } = useDenoms();
   const { data, invalids, onChange, validate, reset } = useFields({ fields });
+  const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    setError(null);
+    setSubmitting(false);
+  }, [open]);
 
   const submit = () => {
+    setError(null);
     if (validate()) {
+      const keplr = window.keplr;
+      if (keplr) {
+        const offlineSigner = keplr.getOfflineSigner(chainInfo.chainId);
+        setSubmitting(true);
+        createNft(offlineSigner, data)
+          .then(() => {
+            console.log("Minted successfully");
+            setSubmitting(false);
+          })
+          .catch((err) => {
+            setError(err.toString());
+            setSubmitting(false);
+          });
+      } else {
+        console.log("Connect Keplr Wallet");
+      }
     }
   };
 
@@ -73,13 +99,28 @@ export default function MintNFT({ open, setOpen }) {
         </div>
       ))}
 
+      {error && (
+        <div className="text-red-300 text-sm italic mb-4 font-bold">
+          {error}
+        </div>
+      )}
+
       <div key="buttons" className="flex flex-row justify-around">
-        <Button className="w-36" onClick={reset}>
+        <Button
+          className="w-36"
+          onClick={() => {
+            reset();
+            setError(null);
+          }}
+        >
           Reset fields
         </Button>
-        <Button className="w-36" onClick={submit}>
-          Mint NFT
-        </Button>
+
+        <SubmitButton
+          submit={submit}
+          submitting={submitting}
+          label="Mint NFT"
+        />
       </div>
     </ModalDialog>
   );
