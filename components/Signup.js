@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "./Button";
 
-export default function ({ onSuccess }) {
+export default function Signup({ onSuccess }) {
   const onClick = () => {
     onSuccess();
   };

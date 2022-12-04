@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@keplr-wallet/types": "^0.11.21",
+    "cudosjs": "^1.2.4",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
     "next": "13.0.6",

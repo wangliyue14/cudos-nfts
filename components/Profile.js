@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { shortenAddress } from "../helper/wallet";
 import useWallet from "../hooks/useWallet";
 
-export default function ({}) {
+export default function Profile({}) {
   const router = useRouter();
   const { account } = useWallet();
   const [hover, setHover] = useState(false);
@@ -25,7 +25,7 @@ export default function ({}) {
       onMouseOver={onHover}
       onMouseOut={onHover}
     >
-      {hover ? "Disconnect " : ""}
+      {hover ? "Sign out " : ""}
       <b>{shortenAddress(account.address)}</b>
     </button>
   );
