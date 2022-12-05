@@ -14,7 +14,7 @@ export default function SignupPage({}) {
     <div>
       <Head>
         <title>CUDOS NFTs Explorer - Signup</title>
-        <meta name="description" content="Explorer for CUDOS NFTs" />
+        <meta name="description" content="Explorer for CUDOS NFTs - Signup" />
         <link rel="icon" href="/logo.svg" />
       </Head>
       <Signup onSuccess={onSignupSuccess} />

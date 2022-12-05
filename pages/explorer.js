@@ -39,7 +39,7 @@ export default function ExplorerPage({}) {
   return (
     <div>
       <Head>
-        <title>CUDOS NFTs Explorer - Your NFTs</title>
+        <title>CUDOS NFTs Explorer</title>
         <meta name="description" content="Explorer for CUDOS NFTs" />
         <link rel="icon" href="/logo.svg" />
       </Head>
