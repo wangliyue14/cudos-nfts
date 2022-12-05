@@ -1,11 +1,6 @@
 import React, { useMemo, useState } from "react";
 import chainInfo from "../config/chainInfo";
-import {
-  copyData,
-  shortenAddress,
-  shortenData,
-  shortenURI,
-} from "../helper/wallet";
+import { copyData, shortenAddress, shortenData, shortenURI } from "../helper";
 import useWallet from "../hooks/useWallet";
 import CopiableText from "./CopiableText";
 import Spinner from "./Spinner";

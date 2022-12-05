@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { shortenAddress } from "../helper/wallet";
+import { shortenAddress } from "../helper";
 import useWallet from "../hooks/useWallet";
 
 export default function Profile({}) {

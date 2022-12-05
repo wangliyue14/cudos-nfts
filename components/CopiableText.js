@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { copyData } from "../helper/wallet";
+import { copyData } from "../helper";
 
 export default function CopiableText({ text, textToCopy, label, link }) {
   const [hovered, setHovered] = useState(false);

@@ -1,6 +1,6 @@
 import React from "react";
 import chainInfo from "../config/chainInfo";
-import { copyData, shortenAddress } from "../helper/wallet";
+import { copyData, shortenAddress } from "../helper";
 import CopiableText from "./CopiableText";
 import Spinner from "./Spinner";
 
