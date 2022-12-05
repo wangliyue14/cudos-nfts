@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Profile from "./Profile";
+import { ToastContainer } from "react-toastify";
 
 export default function Layout({ children }) {
   return (
@@ -12,6 +13,7 @@ export default function Layout({ children }) {
         <Profile />
       </div>
       {children}
+      <ToastContainer />
     </div>
   );
 }

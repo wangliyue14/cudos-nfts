@@ -7,6 +7,7 @@ import TextField from "./TextField";
 import SubmitButton from "./SubmitButton";
 import { createNft } from "../services/nftService";
 import chainInfo from "../config/chainInfo";
+import { toast } from "react-toastify";
 
 const fields = [
   {
@@ -34,10 +35,16 @@ const fields = [
   },
 ];
 
-export default function MintNFT({ open, setOpen }) {
-  const { denoms } = useDenoms();
+export default function MintNFT({
+  open,
+  setOpen,
+  onSuccess,
+  reloadDenoms,
+  selectedDenomId,
+}) {
+  const { denoms } = useDenoms({ reload: reloadDenoms });
   const { data, invalids, onChange, validate, reset } = useFields({ fields });
-  const [denomId, setDenomId] = useState(null);
+  const [denomId, setDenomId] = useState(selectedDenomId);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -45,6 +52,13 @@ export default function MintNFT({ open, setOpen }) {
     setError(null);
     setSubmitting(false);
   }, [open]);
+
+  useEffect(() => {
+    if (selectedDenomId) {
+      console.log("Denom id " + selectedDenomId);
+      setDenomId(selectedDenomId);
+    }
+  }, [open, selectedDenomId]);
 
   const submit = () => {
     setError(null);
@@ -57,6 +71,12 @@ export default function MintNFT({ open, setOpen }) {
           .then(() => {
             console.log("Minted successfully");
             setSubmitting(false);
+            setOpen(false);
+            toast("Minted successfully", {
+              type: "success",
+              position: "top-right",
+            });
+            onSuccess();
           })
           .catch((err) => {
             setError(err.toString());
@@ -78,9 +98,16 @@ export default function MintNFT({ open, setOpen }) {
           className="mt-1 px-3 py-2 bg-white shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full text-white bg-gray rounded-md sm:text-sm focus:ring-1"
           placeholder="Select Denom ID"
           onChange={(e) => setDenomId(e.target.value)}
+          value={denomId}
         >
           {denoms.map((item, idx) => (
-            <option key={idx}>{item.id}</option>
+            <option key={idx} value={item.id}>
+              {item.id}(
+              {item.name.length < 8
+                ? item.name
+                : item.name.substr(0, 8) + "..."}
+              )
+            </option>
           ))}
         </select>
       </label>

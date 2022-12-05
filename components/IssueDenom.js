@@ -6,6 +6,7 @@ import Button from "./Button";
 import SubmitButton from "./SubmitButton";
 import ModalDialog from "./ModalDialog";
 import TextField from "./TextField";
+import { toast } from "react-toastify";
 
 const fields = [
   {
@@ -46,7 +47,7 @@ const fields = [
   },
 ];
 
-export default function IssueDenom({ open, setOpen }) {
+export default function IssueDenom({ open, setOpen, onSuccess }) {
   const { data, invalids, onChange, validate, reset } = useFields({ fields });
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -67,6 +68,12 @@ export default function IssueDenom({ open, setOpen }) {
           .then(() => {
             console.log("Minted successfully");
             setSubmitting(false);
+            setOpen(false);
+            toast("Issued successfully", {
+              type: "success",
+              position: "top-right",
+            });
+            onSuccess();
           })
           .catch((err) => {
             setError(err.toString());

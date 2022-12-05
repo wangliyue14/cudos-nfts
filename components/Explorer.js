@@ -8,10 +8,18 @@ import DenomList from "./DenomList";
 import Layout from "./Layout";
 import NFTList from "./NFTList";
 
-export default function ({ onIssueDenom, onMintNFT }) {
-  const router = useRouter();
+export default function ({
+  onIssueDenom,
+  onMintNFT,
+  reloadDenoms,
+  reloadNfts,
+}) {
   const { account } = useWallet();
-  const { denoms, loading: loadingDenoms, error: denomsError } = useDenoms();
+  const {
+    denoms,
+    loading: loadingDenoms,
+    error: denomsError,
+  } = useDenoms({ reload: reloadDenoms });
   const [selectedDenom, setSelectedDenom] = useState(-1);
   const [filterMine, setFilterMine] = useState(true);
 
@@ -50,7 +58,15 @@ export default function ({ onIssueDenom, onMintNFT }) {
           setLoading(false);
         });
     }
-  }, [selectedDenom]);
+  }, [selectedDenom, reloadNfts]);
+
+  const mintNFT = () => {
+    onMintNFT(
+      selectedDenom >= 0 && selectedDenom < denomsFiltered.length
+        ? denomsFiltered[selectedDenom].id
+        : ""
+    );
+  };
 
   return (
     <Layout>
@@ -59,7 +75,7 @@ export default function ({ onIssueDenom, onMintNFT }) {
         <Button className="w-36 ml-4 text-md" onClick={onIssueDenom}>
           Issue Denom
         </Button>
-        <Button className="w-36 ml-4 text-md" onClick={onMintNFT}>
+        <Button className="w-36 ml-4 text-md" onClick={mintNFT}>
           Mint NFT
         </Button>
       </div>

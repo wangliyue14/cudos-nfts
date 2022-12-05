@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { queryDenoms } from "../services/nftService";
 
-export default function useDenoms() {
+export default function useDenoms({ reload }) {
   const [denoms, setDenoms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,7 +17,7 @@ export default function useDenoms() {
         setError(err);
         setLoading(false);
       });
-  }, []);
+  }, [reload]);
 
   return {
     denoms,
