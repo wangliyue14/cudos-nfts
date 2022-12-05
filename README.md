@@ -2,9 +2,10 @@ This is CUDOS NFTs Explorer where you can browse your CUDOS NFTs and mint new NF
 
 ## Getting Started
 
-Run the development server:
+Install and run the development server:
 
 ```bash
+npm install
 npm run dev
 ```
 
