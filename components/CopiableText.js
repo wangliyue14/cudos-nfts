@@ -6,7 +6,7 @@ export default function CopiableText({ text, textToCopy, label, link }) {
 
   return (
     <p
-      className={"flex flex-row w-48"}
+      className={"flex flex-row w-48 items-center"}
       onMouseOver={() => setHovered(true)}
       onMouseOut={() => setHovered(false)}
     >
@@ -21,7 +21,7 @@ export default function CopiableText({ text, textToCopy, label, link }) {
         />
       )}
       {link && (
-        <a href={link} className="ml-2 pt-1" target="_blank">
+        <a href={link} className="ml-2" target="_blank">
           <img
             src="/link.svg"
             className="cursor-pointer"
