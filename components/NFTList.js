@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import chainInfo from "../config/chainInfo";
 import { copyData, shortenAddress, shortenData, shortenURI } from "../helper";
@@ -59,13 +60,13 @@ export default function NFTList({ items, loading, error, denomId }) {
                 <p className="w-16 text-blue-dark">{idx + 1}</p>
                 <p className="w-64">{item.name}</p>
                 <p className="w-48">
-                  <a
+                  <Link
                     href={item.uri}
                     target="_blank"
                     className="hover:underline"
                   >
                     {shortenURI(item.uri)}
-                  </a>
+                  </Link>
                 </p>
                 <CopiableText
                   text={shortenAddress(item.owner)}
@@ -86,7 +87,7 @@ export default function NFTList({ items, loading, error, denomId }) {
               <p className="mt-4 italic text-blue-dark text-center">
                 There is no NFTs you owned yet.
                 <br />
-                Mint new NFTs or click 'Show all' to see all NFTs.
+                Mint new NFTs or click &apos;Show all&apos; to see all NFTs.
               </p>
             )}
             {!denomId && items.length === 0 && (

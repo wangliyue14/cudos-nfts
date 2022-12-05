@@ -59,7 +59,8 @@ export default function DenomList({
               <p className="mt-4 italic text-blue-dark text-center">
                 There is no denom issued by you yet.
                 <br />
-                Please issue new denoms or click 'Show all' to see all denoms.
+                Please issue new denoms or click &apos;Show all&apos; to see all
+                denoms.
               </p>
             )}
           </>

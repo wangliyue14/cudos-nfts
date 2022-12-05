@@ -8,7 +8,7 @@ import DenomList from "./DenomList";
 import Layout from "./Layout";
 import NFTList from "./NFTList";
 
-export default function ({
+export default function Explorer({
   onIssueDenom,
   onMintNFT,
   reloadDenoms,
