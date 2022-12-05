@@ -1,15 +1,23 @@
 import Head from "next/head";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import Explorer from "../components/Explorer";
 import IssueDenom from "../components/IssueDenom";
 import MintNFT from "../components/MintNFT";
 
 export default function ExplorerPage({}) {
+  const router = useRouter();
   const [openDenomIssue, setOpenDenomIssue] = useState(false);
   const [openNFTMint, setOpenNFTMint] = useState(false);
   const [reloadDenoms, setReloadDenoms] = useState(0);
   const [reloadNfts, setReloadNfts] = useState(0);
   const [selectedDenomId, setSelectedDenomId] = useState("");
+
+  useEffect(() => {
+    if (!window.keplr) {
+      router.replace("/");
+    }
+  }, []);
 
   const onIssueDenom = () => {
     setOpenDenomIssue(true);

@@ -1,20 +1,23 @@
 import Head from "next/head";
-import Image from "next/image";
+import { useRouter } from "next/router";
+import React from "react";
+import Signup from "../components/Signup";
 
-export default function Home() {
+export default function SignupPage({}) {
+  const router = useRouter();
+
+  const onSignupSuccess = () => {
+    router.push("/explorer");
+  };
+
   return (
-    <div className="bg-gray">
+    <div>
       <Head>
-        <title>CUDOS NFTs Explorer</title>
+        <title>CUDOS NFTs Explorer - Signup</title>
         <meta name="description" content="Explorer for CUDOS NFTs" />
         <link rel="icon" href="/logo.svg" />
       </Head>
-
-      <main>
-        <h2 className="text-3xl font-bold">Welcome to CUDOS NFTs Explorer</h2>
-      </main>
-
-      <footer></footer>
+      <Signup onSuccess={onSignupSuccess} />
     </div>
   );
 }

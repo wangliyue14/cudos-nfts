@@ -1,5 +1,5 @@
 import React from "react";
-import { shortenAddress } from "../helper/wallet";
+import { copyData, shortenAddress } from "../helper/wallet";
 import Spinner from "./Spinner";
 
 export default function DenomList({
@@ -11,12 +11,6 @@ export default function DenomList({
   changeFilter,
   filterMine,
 }) {
-  const copyData = (data) => {
-    navigator.clipboard.writeText(data).then(() => {
-      console.log("Copied data");
-    });
-  };
-
   return (
     <div className="bg-gray mt-4 mb-4 bg-blue-dark-2 rounded-lg p-4 lg:w-1/4">
       <div className="flex flex-row justify-between text-lg text-blue-dark mt-4 mb-4">
@@ -52,7 +46,7 @@ export default function DenomList({
                 <p className="w-48 text-sm">{item.name}</p>
                 <p
                   className="w-32 text-sm cursor-pointer"
-                  onClick={() => copyData(item.creator)}
+                  onClick={() => copyData(item.creator, "Address")}
                 >
                   {shortenAddress(item.creator)}
                 </p>

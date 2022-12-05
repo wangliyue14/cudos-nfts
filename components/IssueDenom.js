@@ -66,7 +66,6 @@ export default function IssueDenom({ open, setOpen, onSuccess }) {
         setSubmitting(true);
         createDenom(offlineSigner, data)
           .then(() => {
-            console.log("Minted successfully");
             setSubmitting(false);
             setOpen(false);
             toast("Issued successfully", {
@@ -80,7 +79,10 @@ export default function IssueDenom({ open, setOpen, onSuccess }) {
             setSubmitting(false);
           });
       } else {
-        console.log("Connect Keplr Wallet");
+        toast("Please install Keplr Wallet", {
+          type: "error",
+          position: "top-right",
+        });
       }
     }
   };

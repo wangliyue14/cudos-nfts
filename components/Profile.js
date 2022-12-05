@@ -9,7 +9,7 @@ export default function Profile({}) {
   const [hover, setHover] = useState(false);
 
   const onClick = () => {
-    router.push("/signup");
+    router.push("/");
   };
 
   const onHover = () => {

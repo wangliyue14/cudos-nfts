@@ -1,9 +1,14 @@
 import React, { useMemo, useState } from "react";
-import { shortenAddress, shortenData, shortenURI } from "../helper/wallet";
+import {
+  copyData,
+  shortenAddress,
+  shortenData,
+  shortenURI,
+} from "../helper/wallet";
 import useWallet from "../hooks/useWallet";
 import Spinner from "./Spinner";
 
-export default function NFTList({ items, loading, error }) {
+export default function NFTList({ items, loading, error, denomId }) {
   const { account } = useWallet();
   const [filterMine, setFilterMine] = useState(true);
 
@@ -18,16 +23,10 @@ export default function NFTList({ items, loading, error }) {
     return null;
   }, [items, filterMine, account]);
 
-  const copyData = (data) => {
-    navigator.clipboard.writeText(data).then(() => {
-      console.log("Copied data");
-    });
-  };
-
   return (
     <div className="bg-gray mt-4 mb-4 bg-blue-dark-2 rounded-lg p-4 lg:w-[calc(75%-20px)]">
-      <div className="flex flex-row justify-between">
-        <p className="text-lg text-blue-dark mt-4 mb-4">NFT List</p>
+      <div className="flex flex-row justify-between text-blue-dark">
+        <p className="text-lg mt-4 mb-4">NFT List</p>
         <button
           className="underline italic"
           onClick={() => setFilterMine(!filterMine)}
@@ -73,13 +72,13 @@ export default function NFTList({ items, loading, error }) {
                 </p>
                 <p
                   className="w-48 cursor-pointer"
-                  onClick={() => copyData(item.owner)}
+                  onClick={() => copyData(item.owner, "Address")}
                 >
                   {shortenAddress(item.owner)}
                 </p>
                 <p
                   className="w-48 cursor-pointer"
-                  onClick={() => copyData(item.data)}
+                  onClick={() => copyData(item.data, "Data")}
                 >
                   {shortenData(item.data)}
                 </p>
@@ -87,11 +86,16 @@ export default function NFTList({ items, loading, error }) {
               </div>
             ))}
 
-            {filterMine && filteredItems.length === 0 && (
+            {denomId && filterMine && filteredItems.length === 0 && (
               <p className="mt-4 italic text-blue-dark text-center">
                 There is no NFTs you owned yet.
                 <br />
                 Mint new NFTs or click 'Show all' to see all NFTs.
+              </p>
+            )}
+            {!denomId && items.length === 0 && (
+              <p className="mt-4 italic text-blue-dark text-center">
+                Please select denom in the left panel.
               </p>
             )}
           </>

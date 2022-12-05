@@ -38,6 +38,13 @@ export default function ({
     return null;
   }, [denoms, filterMine, account]);
 
+  const selectedDenomId = useMemo(() => {
+    if (selectedDenom >= 0 && selectedDenom < denomsFiltered.length) {
+      return denomsFiltered[selectedDenom].id;
+    }
+    return "";
+  }, [selectedDenom, denoms, filterMine]);
+
   useEffect(() => {
     if (
       account &&
@@ -48,7 +55,6 @@ export default function ({
       setLoading(true);
       queryNfts(denomsFiltered[selectedDenom].id)
         .then((nfts) => {
-          console.log("nfts " + JSON.stringify(nfts));
           setItems(nfts);
           setLoading(false);
         })
@@ -61,11 +67,7 @@ export default function ({
   }, [selectedDenom, reloadNfts]);
 
   const mintNFT = () => {
-    onMintNFT(
-      selectedDenom >= 0 && selectedDenom < denomsFiltered.length
-        ? denomsFiltered[selectedDenom].id
-        : ""
-    );
+    onMintNFT(selectedDenomId);
   };
 
   return (
@@ -90,7 +92,12 @@ export default function ({
           changeFilter={() => setFilterMine(!filterMine)}
         />
         <div className="w-4" />
-        <NFTList items={items} loading={loading} error={error} />
+        <NFTList
+          items={items}
+          loading={loading}
+          error={error}
+          denomId={selectedDenomId}
+        />
       </div>
     </Layout>
   );

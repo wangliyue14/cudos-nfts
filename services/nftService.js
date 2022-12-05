@@ -15,7 +15,6 @@ export const queryDenoms = async () => {
 export const queryNfts = async (denomId) => {
   const queryClient = await StargateClient.connect(chainInfo.rpc);
   const response = await queryClient.nftModule.getNftCollection(denomId);
-  console.log("denoms " + JSON.stringify(response.collection.nfts));
   return response.collection.nfts.map((item) => ({
     ...item,
     denom: response.collection.denom,
@@ -37,7 +36,6 @@ export const queryAllNfts = async ({ address, denomId }) => {
   if (address) {
     allNfts = allNfts.filter((item) => item.creator === address);
   }
-  console.log("loaded " + JSON.stringify(allNfts[10]));
   return allNfts;
 };
 
@@ -77,7 +75,6 @@ export const createNft = async (signer, data) => {
     uri: data.uri,
     data: data.data,
   };
-  console.log("REq" + JSON.stringify(req));
   const response = await signingClient.nftMintToken(
     sender,
     data.denomId,

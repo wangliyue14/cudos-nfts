@@ -55,7 +55,6 @@ export default function MintNFT({
 
   useEffect(() => {
     if (selectedDenomId) {
-      console.log("Denom id " + selectedDenomId);
       setDenomId(selectedDenomId);
     }
   }, [open, selectedDenomId]);
@@ -69,7 +68,6 @@ export default function MintNFT({
         setSubmitting(true);
         createNft(offlineSigner, { ...data, denomId: denomId })
           .then(() => {
-            console.log("Minted successfully");
             setSubmitting(false);
             setOpen(false);
             toast("Minted successfully", {
@@ -82,8 +80,6 @@ export default function MintNFT({
             setError(err.toString());
             setSubmitting(false);
           });
-      } else {
-        console.log("Connect Keplr Wallet");
       }
     }
   };
