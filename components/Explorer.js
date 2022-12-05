@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useDenoms from "../hooks/useDenoms";
 import useWallet from "../hooks/useWallet";
 import { queryNfts } from "../services/nftService";
@@ -13,20 +13,32 @@ export default function ({ onIssueDenom, onMintNFT }) {
   const { account } = useWallet();
   const { denoms, loading: loadingDenoms, error: denomsError } = useDenoms();
   const [selectedDenom, setSelectedDenom] = useState(-1);
+  const [filterMine, setFilterMine] = useState(true);
 
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const denomsFiltered = useMemo(() => {
+    if (denoms) {
+      if (filterMine) {
+        return denoms.filter((item) => item.creator === account.address);
+      } else {
+        return denoms;
+      }
+    }
+    return null;
+  }, [denoms, filterMine, account]);
 
   useEffect(() => {
     if (
       account &&
       account.address &&
       selectedDenom >= 0 &&
-      selectedDenom < denoms.length
+      selectedDenom < denomsFiltered.length
     ) {
       setLoading(true);
-      queryNfts(denoms[selectedDenom].id)
+      queryNfts(denomsFiltered[selectedDenom].id)
         .then((nfts) => {
           console.log("nfts " + JSON.stringify(nfts));
           setItems(nfts);
@@ -53,11 +65,13 @@ export default function ({ onIssueDenom, onMintNFT }) {
       </div>
       <div className="flex flex-row">
         <DenomList
-          denoms={denoms}
+          denoms={denomsFiltered}
           loading={loadingDenoms}
           error={denomsError}
           selectedDenom={selectedDenom}
           setSelectedDenom={setSelectedDenom}
+          filterMine={filterMine}
+          changeFilter={() => setFilterMine(!filterMine)}
         />
         <div className="w-4" />
         <NFTList items={items} loading={loading} error={error} />

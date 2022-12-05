@@ -35,7 +35,6 @@ const fields = [
   {
     name: "minter",
     label: "Minter",
-    required: true,
   },
   {
     name: "description",

@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { shortenAddress, shortenData, shortenURI } from "../helper/wallet";
+import useWallet from "../hooks/useWallet";
 import Spinner from "./Spinner";
 
 export default function NFTList({ items, loading, error }) {
+  const { account } = useWallet();
+  const [filterMine, setFilterMine] = useState(true);
+
+  const filteredItems = useMemo(() => {
+    if (items) {
+      if (filterMine) {
+        return items.filter((item) => item.owner === account.address);
+      } else {
+        return items;
+      }
+    }
+    return null;
+  }, [items, filterMine, account]);
+
   const copyData = (data) => {
     navigator.clipboard.writeText(data).then(() => {
       console.log("Copied data");
@@ -11,7 +26,15 @@ export default function NFTList({ items, loading, error }) {
 
   return (
     <div className="bg-gray mt-4 mb-4 bg-blue-dark-2 rounded-lg p-4 lg:w-[calc(75%-20px)]">
-      <p className="text-lg text-blue-dark mt-4 mb-4">NFT List</p>
+      <div className="flex flex-row justify-between">
+        <p className="text-lg text-blue-dark mt-4 mb-4">NFT List</p>
+        <button
+          className="underline italic"
+          onClick={() => setFilterMine(!filterMine)}
+        >
+          {filterMine ? "Show all" : "Show my NFTs"}
+        </button>
+      </div>
       <div
         key={0}
         className="lg:flex flex-row bg-blue-dark-3 font-bold p-2 rounded-md text-blue-dark"
@@ -25,39 +48,53 @@ export default function NFTList({ items, loading, error }) {
       </div>
       <div className="h-[40em] overflow-y-auto">
         {loading ? (
-          <Spinner />
+          <Spinner className="mt-2" />
         ) : error ? (
           <div>Error: {JSON.stringify(error)}</div>
         ) : (
-          items.map((item, idx) => (
-            <div
-              key={idx + 1}
-              className={`lg:flex flex-row p-2 hover:bg-blue-dark hover:rounded-md ${
-                idx % 2 === 0 ? "bg-blue-dark-2" : "bg-blue-dark-3 rounded-md"
-              }`}
-            >
-              <p className="w-16 text-blue-dark">{idx + 1}</p>
-              <p className="w-64">{item.name}</p>
-              <p className="w-48">
-                <a href={item.uri} target="_blank" className="hover:underline">
-                  {shortenURI(item.uri)}
-                </a>
-              </p>
-              <p
-                className="w-48 cursor-pointer"
-                onClick={() => copyData(item.owner)}
+          <>
+            {filteredItems.map((item, idx) => (
+              <div
+                key={idx + 1}
+                className={`lg:flex flex-row p-2 hover:bg-blue-dark hover:rounded-md ${
+                  idx % 2 === 0 ? "bg-blue-dark-2" : "bg-blue-dark-3 rounded-md"
+                }`}
               >
-                {shortenAddress(item.owner)}
+                <p className="w-16 text-blue-dark">{idx + 1}</p>
+                <p className="w-64">{item.name}</p>
+                <p className="w-48">
+                  <a
+                    href={item.uri}
+                    target="_blank"
+                    className="hover:underline"
+                  >
+                    {shortenURI(item.uri)}
+                  </a>
+                </p>
+                <p
+                  className="w-48 cursor-pointer"
+                  onClick={() => copyData(item.owner)}
+                >
+                  {shortenAddress(item.owner)}
+                </p>
+                <p
+                  className="w-48 cursor-pointer"
+                  onClick={() => copyData(item.data)}
+                >
+                  {shortenData(item.data)}
+                </p>
+                <p className="w-64">{item.denom && item.denom.name}</p>
+              </div>
+            ))}
+
+            {filterMine && filteredItems.length === 0 && (
+              <p className="mt-4 italic text-blue-dark text-center">
+                There is no NFTs you owned yet.
+                <br />
+                Mint new NFTs or click 'Show all' to see all NFTs.
               </p>
-              <p
-                className="w-48 cursor-pointer"
-                onClick={() => copyData(item.data)}
-              >
-                {shortenData(item.data)}
-              </p>
-              <p className="w-64">{item.denom && item.denom.name}</p>
-            </div>
-          ))
+            )}
+          </>
         )}
       </div>
     </div>

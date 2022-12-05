@@ -55,7 +55,7 @@ export const createDenom = async (signer, data) => {
     data.schema,
     data.symbol,
     data.traits,
-    sender,
+    data.minter,
     data.description,
     data.data,
     GasPrice.fromString("1stake")
@@ -70,6 +70,14 @@ export const createNft = async (signer, data) => {
   );
   const account = (await signer.getAccounts())[0];
   const sender = account.address;
+  const req = {
+    sender,
+    denomId: data.denomId,
+    name: data.name,
+    uri: data.uri,
+    data: data.data,
+  };
+  console.log("REq" + JSON.stringify(req));
   const response = await signingClient.nftMintToken(
     sender,
     data.denomId,
