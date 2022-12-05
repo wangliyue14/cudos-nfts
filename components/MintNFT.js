@@ -80,6 +80,11 @@ export default function MintNFT({
             setError(err.toString());
             setSubmitting(false);
           });
+      } else {
+        toast("Please install Keplr Wallet", {
+          type: "error",
+          position: "top-right",
+        });
       }
     }
   };
