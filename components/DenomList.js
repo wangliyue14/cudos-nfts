@@ -1,5 +1,7 @@
 import React from "react";
+import chainInfo from "../config/chainInfo";
 import { copyData, shortenAddress } from "../helper/wallet";
+import CopiableText from "./CopiableText";
 import Spinner from "./Spinner";
 
 export default function DenomList({
@@ -44,12 +46,12 @@ export default function DenomList({
               >
                 <p className="w-16 text-blue-dark">{idx + 1}</p>
                 <p className="w-48 text-sm">{item.name}</p>
-                <p
-                  className="w-32 text-sm cursor-pointer"
-                  onClick={() => copyData(item.creator, "Address")}
-                >
-                  {shortenAddress(item.creator)}
-                </p>
+                <CopiableText
+                  text={shortenAddress(item.creator)}
+                  textToCopy={item.creator}
+                  label="Address"
+                  link={chainInfo.accountExplorerUrl + item.creator}
+                />
               </div>
             ))}
 

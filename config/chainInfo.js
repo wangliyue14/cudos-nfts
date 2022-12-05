@@ -44,6 +44,7 @@ const chainInfo = {
   features: ["ibc-transfer", "ibc-go", "cosmwasm"],
   coinType: 118,
   beta: true,
+  accountExplorerUrl: "https://explorer.testnet.cudos.org/accounts/",
 };
 
 export default chainInfo;

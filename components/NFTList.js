@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import chainInfo from "../config/chainInfo";
 import {
   copyData,
   shortenAddress,
@@ -6,6 +7,7 @@ import {
   shortenURI,
 } from "../helper/wallet";
 import useWallet from "../hooks/useWallet";
+import CopiableText from "./CopiableText";
 import Spinner from "./Spinner";
 
 export default function NFTList({ items, loading, error, denomId }) {
@@ -70,18 +72,17 @@ export default function NFTList({ items, loading, error, denomId }) {
                     {shortenURI(item.uri)}
                   </a>
                 </p>
-                <p
-                  className="w-48 cursor-pointer"
-                  onClick={() => copyData(item.owner, "Address")}
-                >
-                  {shortenAddress(item.owner)}
-                </p>
-                <p
-                  className="w-48 cursor-pointer"
-                  onClick={() => copyData(item.data, "Data")}
-                >
-                  {shortenData(item.data)}
-                </p>
+                <CopiableText
+                  text={shortenAddress(item.owner)}
+                  textToCopy={item.owner}
+                  label="Address"
+                  link={chainInfo.accountExplorerUrl + item.owner}
+                />
+                <CopiableText
+                  text={shortenData(item.data)}
+                  textToCopy={item.data}
+                  label="Data"
+                />
                 <p className="w-64">{item.denom && item.denom.name}</p>
               </div>
             ))}
